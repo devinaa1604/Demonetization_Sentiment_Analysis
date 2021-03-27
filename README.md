@@ -37,8 +37,8 @@ Removed stop words after unnesting tweets
 
 ### Results of NRC Lexicon
 
-<img src="Images/NRCLexicon.png" width="600" height="450">
+<img src="Images/NRCLexicon.png" width="600" height="500">
 
 ### Overall Sentiment
 
-<img src="Images/Overall_Sentiment.png" width="600" height="450">
+<img src="Images/Overall_Sentiment.png" width="600" height="500">
