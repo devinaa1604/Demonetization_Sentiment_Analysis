@@ -1,0 +1,120 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+# Setup
+
+```{r Setup}
+getwd()
+library(tidyverse)
+library(tidytext)
+library(wordcloud)
+library(reshape2)
+library(syuzhet)
+```
+
+# Data
+
+```{r Data}
+tweets <- read.csv("demonetization-tweets.csv")
+```
+
+# Cleaning up the Data
+
+```{r Cleaning up the Data}
+tweets$stripped_text <- gsub("http.*","",  tweets$text)
+tweets$stripped_text <- gsub("https.*","", tweets$stripped_text)
+tweets$stripped_text <- gsub("RT*", "", tweets$stripped_text)
+tweets$stripped_text <- gsub("&amp", "", tweets$stripped_text)
+tweets$stripped_text <- str_to_lower(tweets$stripped_text)
+tweets$stripped_text <- gsub("@\\w+", "", tweets$stripped_text)
+tweets$stripped_text <- gsub("[ |\t]{2,}", "", tweets$stripped_text)
+tweets$stripped_text <- gsub("^ ", "", tweets$stripped_text)
+tweets$stripped_text <- gsub(" $", "", tweets$stripped_text)
+tweets$stripped_text <- gsub("[[:punct:]]", "", tweets$stripped_text)
+```
+
+# Removing Stop Words
+
+```{r Removing Stop Words}
+tweets_clean <- tweets %>%
+  dplyr::select(stripped_text) %>%
+  unnest_tokens(word, stripped_text)
+
+SMART_stop_words <- stop_words %>% 
+  filter(lexicon == "SMART")
+
+tidy_tweets <- tweets_clean %>%
+  anti_join(SMART_stop_words)
+```
+
+# Top 10 words
+
+```{r Top 10 words}
+tidy_tweets %>%
+  count(word, sort = TRUE) %>%
+  top_n(15) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  labs(x = "Count",
+       y = "Unique words",
+       title = "Count of unique words found in tweets")
+```
+
+# WordCloud
+
+```{r WordCloud}
+tidy_tweets %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+tidy_tweets %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("darkred", "darkgreen"),
+                   max.words = 100)
+```
+
+# Sentiment Analysis
+
+```{r}
+tweets_sentiments <- get_nrc_sentiment(as.character(tidy_tweets))
+tweets_sentiments1 <- data.frame(t(tweets_sentiments))
+new_sentiment <- data.frame(rowSums(tweets_sentiments1))
+names(new_sentiment)[1] <- "count"
+new_sentiment <- cbind("sentiment" = rownames(new_sentiment), new_sentiment)
+rownames(new_sentiment) <- NULL
+```
+
+# Plots for the Sentiment Analysis
+
+```{r}
+qplot(sentiment, 
+      data = new_sentiment[1:8,], 
+      weight = count, 
+      geom = "bar",
+      fill = sentiment) +
+  ggtitle("Demonitization Sentiments")
+
+qplot(sentiment, 
+      data = new_sentiment[9:10,], 
+      weight = count, 
+      geom = "bar",
+      fill = sentiment) +
+  ggtitle("Demonitization Sentiments")
+```
+
+
+
