@@ -1,4 +1,6 @@
 # Sentiment Analysis on Demonetization in India
+![](Images/demonitization-india.png)
+
 
 ## Background
 The demonetization of ₹500 and ₹1000 banknotes was a step taken by the Government of India on 8 November 2016, ceasing the usage of all ₹500 and ₹1000 banknotes of the Mahatma Gandhi Series as a form of legal tender in India from 9 November 2016.
@@ -27,8 +29,16 @@ Removed stop words after unnesting tweets
 ## Analysis
 ### Top 15 words
 
+<img src="Images/Top_15_Words.png" width="600" height="450">
+
 ### Word Cloud
+
+<img src="Images/WordCloud.png" width="600" height="450">
 
 ### Results of NRC Lexicon
 
+<img src="Images/NRCLexicon.png" width="600" height="450">
+
 ### Overall Sentiment
+
+<img src="Images/Overall_Sentiment.png" width="600" height="450">
