@@ -28,17 +28,23 @@ Removed stop words after unnesting tweets
 
 ## Analysis
 ### Top 15 words
+This gives a count of top 15 unique words that are most used in the tweets. 
 
 <img src="Images/Top_15_Words.png" width="600" height="450">
 
 ### Word Cloud
+Here, the red words show negative words and the green are the positive words. This was made by using the Bing Lexicon.
 
 <img src="Images/WordCloud.png" width="600" height="450">
 
 ### Results of NRC Lexicon
+NRC Lexicon analyzes the words on a spectrum of 8 emotions: Anger, Anticipation, Disgust, fear, Joy, Sadness, Surprise, and Trust. 
+
+Here, trust is highest and still not too far behind is fear. This aligns with the fact that India is the biggest democracy in the world, policies of the government are supported by the majority with a feeling of trust however, a big change like this also bring in the feeling of fear. 
 
 <img src="Images/NRCLexicon.png" width="600" height="500">
 
 ### Overall Sentiment
+Even in the previous plot, even through the highest feeling was of trust, the other feelings that followed that were of fear, anger and sadness. Therefore, the cumulative total shows a overall negative feeling. 
 
 <img src="Images/Overall_Sentiment.png" width="600" height="500">
